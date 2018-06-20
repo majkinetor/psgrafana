@@ -1,6 +1,4 @@
-$Env:GRAFANA_URL = "http://psicirmetrika.mfin.trezor.rs:3000"        
-$Env:GRAFANA_USERNAME = 'mmilic'
-$Env:GRAFANA_PASSWORD = 'kljun7'
+
 
 import-module -force $PSScriptRoot\..
 
