@@ -23,10 +23,10 @@ function Initialize-Session {
     [CmdletBinding()]
     param(
         # Username, if ommitted password must be set as AccessToken
-        [string] $Username,
+        [string] $Username = $Env:GRAFANA_USERNAME,
 
         # Password, if omitted previously generated refresh token will be used
-        [string] $Password,
+        [string] $Password = $Env:GRAFANA_PASSWORD,
 
         # API endpoint to the Grafana service, by default taken from environment variable GRAFANA_URL
         [string] $Url = $Env:GRAFANA_URL
