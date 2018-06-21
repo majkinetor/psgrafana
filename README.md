@@ -1,2 +1,4 @@
-# psgrafana
-Grafana REST API
+# PSGrafana
+
+Grafana REST API module.
+
