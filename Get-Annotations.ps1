@@ -1,28 +1,50 @@
+<#
+.EXAMPLE
+    Get-Annotations -From (Get-Date).AddDays(-3) -Tags foo
+#>
 function Get-Annotations {
     param(
-        [string]    $Text = 'Created by psgrafana',
-        [string[]]  $Tags = @('psgrafana', 'powershell'),        
-        [int]       $DashboardId,       
-        [int]       $PanelId = 1,
-        [DateTime]  $Time = (Get-Date),
+        # Use this to filter global annotations
+        [string[]]  $Tags,   
 
-        [ParameterSetName('TimeEnd')]
-        [DateTime]  $TimeEnd,
+        # Find annotations that are scoped to a specific dashboard
+        [string]       $DashboardId,
 
-        [ParameterSetName('TimeSpan')]
-        [TimeSpan]  $Timespan
+        # Find annotations that are scoped to a specific panel
+        [string]       $PanelId,
+
+        [DateTime]  $From,
+        [DateTime]  $To,
+
+        # Max limit for results returned, default is 100. 
+        [string] $Limit,
+
+        # Find annotations created by a specific user
+        [string] $UserId,
+
+        [ValidateSet('alert', 'annotation')]
+        [string] $Type
     )
-
-    if ($Timespan) { $TimeEnd = $Time + $Timespan }
     
     $unixEpochStart = new-object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)
-    $epoch_m     = [int64]($Time.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
-    $epochEnd_ms = [int64]($TimeEnd.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
+    $epochFrom_ms   = [int64]($From.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
+    $epochTo_ms     = if ($To) { [int64]($To.ToUniversalTime() - $unixEpochStart).TotalMilliseconds }
 
+    $query = @{
+      from        = $epochFrom_ms
+      to          = $epochTo_ms
+      tags        = ($Tags -join '&tags=')
+      limit       = $Limit
+      dashboardId = $DashboardId
+      panelId     = $PanelId
+      userId      = $UserId
+      type        = $Type
+    }
 
     $params = @{
         Endpoint = "annotations"
-        Method = "Get"
+        Query    = $query
+        Method   = "Get"
     }
     send-request $params
 }

@@ -9,8 +9,14 @@ function send-request( [HashTable] $Params ) {
     if (!$p.CotentType)            { $p.ContentType = 'application/json' }
     if (!$p.Headers)               { $p.Headers     = @{} }
     if (!$p.Headers.Authorization) { $p.Headers.Authorization = $script:global.Authorization }
+    
+    if ($p.Query) {
+        $query = $p.Query.GetEnumerator() | % { if ($_.Value -and $_.Value -ne '') { "{0}={1}" -f $_.Key, $_.Value} } 
+        if ($query) { $query = $query -join '&'; $p.Uri += "?$query" }
+    }
 
     $p.Remove('EndPoint')
+    $p.Remove('Query')
 
     if (!$p.Uri.StartsWith('http')) { throw 'Before calling any module function you need to use Initialize-Session' }
 
