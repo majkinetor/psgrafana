@@ -1,10 +1,5 @@
-#$Env:GRAFANA_URL =         
-#$Env:GRAFANA_USERNAME =
-#$Env:GRAFANA_PASSWORD =
+. $PSScriptRoot\_init.ps1
 
-import-module -force $PSScriptRoot\..
-
-Initialize-Session
 Get-Dashboards -List
 $dashboards = Get-Dashboards | % { Get-Dashboard $_.uri } 
 

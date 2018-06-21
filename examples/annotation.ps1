@@ -1,19 +1,12 @@
-$Env:GRAFANA_URL = "http://psicirmetrika.mfin.trezor.rs:3000"        
-$Env:GRAFANA_USERNAME = 'mmilic'
-$Env:GRAFANA_PASSWORD = 'kljun7'
+. $PSScriptRoot\_init.ps1
 
-import-module -force $PSScriptRoot\..
+$ErrorActionPreference = 'STOP'
 
-Initialize-Session
-Get-Dashboard db/cir-applicative-metrics | % dashboard | set db
-
-$panelTitle = '*iis*hang*'
-$db.panels | ? title -like $panelTitle | select -first 1 | set panel
+$dash = New-Dashboard 'PSGrafana Annotation Test' -Overwrite
 
 $params = @{
-    Text = "psgrafana test 2" 
-    Tags = 'foo', 'bar'
-    DashboardId = $db.id
-    PanelId  = $panel.Id
+    DashboardId = $dash.id
+    Time        = (Get-Date).AddMinutes(-60)
+    Timespan    = '00:20'    
 }
 New-Annotation @params
