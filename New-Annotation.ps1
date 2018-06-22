@@ -43,20 +43,14 @@ function New-Annotation {
     )    
  
     if ($Timespan) { $TimeEnd = $Time + $Timespan }
-    
-    $unixEpochStart = New-Object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)
-    $epoch_ms       = [int64]($Time.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
-    if ($TimeEnd) {
-         $epochEnd_ms = [int64]($TimeEnd.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
-    }
-    
+
     $Body = @{
         dashboardId = $DashboardId
         panelId     = $PanelId
-        time        = $epoch_ms
-        timeEnd     = $epochEnd_ms
+        time        = epoch $Time
+        timeEnd     = epoch $TimeEnd
         tags        = $tags
-        isRegion    = $epochEnd_ms -ne $null
+        isRegion    = $TimeEnd -ne $null
         text        = $Text
     }
 

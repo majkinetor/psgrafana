@@ -42,9 +42,6 @@ function Initialize-Session {
 
     irm "$Url/api/user" -Headers @{ Authorization = $authorization } -ErrorAction STOP
 
-    $script:global = @{
-        Url           = "$Url/api"
-        Authorization = $authorization
-    }
-
+    $script:Url = "$Url/api"
+    $script:Authorization = $authorization
 }

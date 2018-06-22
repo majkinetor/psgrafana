@@ -1,6 +1,12 @@
 <#
+.SYNOPSIS
+    Get Grafana annotations
+
 .EXAMPLE
     Get-Annotations -From (Get-Date).AddDays(-3) -Tags foo
+
+.LINK
+    http://docs.grafana.org/http_api/annotations/#find-annotations
 #>
 function Get-Annotations {
     param(
@@ -8,10 +14,10 @@ function Get-Annotations {
         [string[]]  $Tags,   
 
         # Find annotations that are scoped to a specific dashboard
-        [string]       $DashboardId,
+        [string]    $DashboardId,
 
         # Find annotations that are scoped to a specific panel
-        [string]       $PanelId,
+        [string]    $PanelId,
 
         [DateTime]  $From,
         [DateTime]  $To,
@@ -26,13 +32,9 @@ function Get-Annotations {
         [string] $Type
     )
     
-    $unixEpochStart = new-object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)
-    $epochFrom_ms   = [int64]($From.ToUniversalTime() - $unixEpochStart).TotalMilliseconds
-    $epochTo_ms     = if ($To) { [int64]($To.ToUniversalTime() - $unixEpochStart).TotalMilliseconds }
-
     $query = @{
-      from        = $epochFrom_ms
-      to          = $epochTo_ms
+      from        = epoch $From
+      to          = epoch $To
       tags        = ($Tags -join '&tags=')
       limit       = $Limit
       dashboardId = $DashboardId

@@ -13,12 +13,10 @@ Export-ModuleMember -Alias *
 
 if ($Env:GRAFANA_URL) {
     Write-Host -NoNewLine -Foreground green "`n  Grafana URL: ".PadRight(15)
-    Write-Host $Env:GRAFANA_URL
+    Write-Host $Env:GRAFANA_URL "`n"
 }
-WRite-Host
 
-# module global variables will go here
-$script:global = @{
-    URL           = $null
-    Authorization = $null
-}
+# All script variables used
+$script:URL           = ''
+$script:Authorization = ''
+$script:EpochStart    = New-Object DateTime 1970,1,1,0,0,0,([DateTimeKind]::Utc)

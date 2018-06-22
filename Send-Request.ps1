@@ -4,11 +4,11 @@ function send-request( [HashTable] $Params ) {
 
     $p.UseBasicParsing = $true
 
-    if (!$p.Uri)                   { $p.Uri         = $script:global.Url + '/' + $p.Endpoint }
+    if (!$p.Uri)                   { $p.Uri         = $script:Url + '/' + $p.Endpoint }
     if (!$p.Method)                { $p.Method      = 'POST' }
     if (!$p.CotentType)            { $p.ContentType = 'application/json' }
     if (!$p.Headers)               { $p.Headers     = @{} }
-    if (!$p.Headers.Authorization) { $p.Headers.Authorization = $script:global.Authorization }
+    if (!$p.Headers.Authorization) { $p.Headers.Authorization = $script:Authorization }
     
     if ($p.Query) {
         $query = $p.Query.GetEnumerator() | % { if ($_.Value -and $_.Value -ne '') { "{0}={1}" -f $_.Key, $_.Value} } 
