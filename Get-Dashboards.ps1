@@ -1,14 +1,13 @@
-function Get-Dashboards( [string] $Query, [string] $Tag, [int] $Limit, [switch] $List ) {
-
-    $q = @()
-    if ($Tag)   { $q += "tag=$Tag" }
-    if ($Query) { $q += "query=$Query"}
-    if ($Limit) { $q += "limit=$Limit"}
-    $q = $q -join '&'
+function Get-Dashboards( [string] $Query, [string] $Tags, [int] $Limit, [switch] $List ) {
 
     $params = @{
-        Endpoint = "search?$q"
         Method   = 'GET'
+        Endpoint = "search"
+        Query = @{
+            query = $Query
+            tags  = $Tags -join '&tags='
+            limit = $Limit
+        }
     }
     $res = send-request $params
 

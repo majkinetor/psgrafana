@@ -1,3 +1,10 @@
+<#
+.SYNOPSIS
+    Get single Grafana dashboard
+
+.LINK
+    http://docs.grafana.org/http_api/dashboard/#get-dashboard-by-uid
+#>
 function Get-Dashboard {
     param(
         [string] $Uri

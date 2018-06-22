@@ -35,7 +35,7 @@ function Get-Annotations {
     $query = @{
       from        = epoch $From
       to          = epoch $To
-      tags        = ($Tags -join '&tags=')
+      tags        = $Tags -join '&tags='
       limit       = $Limit
       dashboardId = $DashboardId
       panelId     = $PanelId
