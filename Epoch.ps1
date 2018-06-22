@@ -14,8 +14,8 @@ function ConvertTo-EpochTime ( $dt ) {
 .SYNOPSIS
     Converts epoch time in milliseconds to [DateTime] object
 #>
-function ConvertFrom-EpochTime ( [int64] $etime ) {
-    $script:EpochStart.AddMilliseconds($etime)
+function ConvertFrom-EpochTime ( [int64] $etime ) {    
+    $script:EpochStart.AddMilliseconds($etime).ToLocalTime()
 }
 
 sal epoch ConvertTo-EpochTime
